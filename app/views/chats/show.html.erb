@@ -1,0 +1,89 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <!-- 侧边栏 -->
+    <div class="col-md-2 col-lg-2 bg-light border-end">
+      <div class="p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">聊天列表</h5>
+          <%= link_to new_chat_path, class: "btn btn-sm btn-primary" do %>
+            <i class="bi bi-plus"></i>
+          <% end %>
+        </div>
+
+        <div class="list-group list-group-flush">
+          <% Chat.order(updated_at: :desc).limit(10).each do |chat| %>
+            <div class="list-group-item <%= 'active' if chat == @chat %>">
+              <%= link_to chat_path(chat), class: "text-decoration-none #{'text-white' if chat == @chat}" do %>
+                <div class="fw-bold small"><%= truncate(chat.title, length: 15) %></div>
+                <% if chat.last_message %>
+                  <small class="text-muted <%= 'text-white-50' if chat == @chat %>">
+                    <%= truncate(chat.last_message.content, length: 20) %>
+                  </small>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主聊天区域 -->
+    <div class="col-md-10 col-lg-10 d-flex flex-column">
+      <!-- 聊天头部 -->
+      <div class="border-bottom p-3 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><%= @chat.title %></h4>
+          <div>
+            <%= link_to "返回列表", chats_path, class: "btn btn-outline-secondary btn-sm me-2" %>
+            <%= link_to "删除聊天", chat_path(@chat), method: :delete,
+                        class: "btn btn-outline-danger btn-sm",
+                        confirm: "确定要删除这个聊天吗？" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- 消息区域 -->
+      <div class="flex-grow-1 overflow-auto p-3" id="messages-container" data-controller="chat-scroll">
+        <% if @messages.any? %>
+          <% @messages.each do |message| %>
+            <div class="mb-3 <%= 'text-end' if message.role == 'user' %>">
+              <div class="d-inline-block p-3 rounded message-bubble <%= message.role == 'user' ? 'bg-primary text-white' : 'bg-light' %>">
+                <div class="message-content">
+                  <%= simple_format(message.content) %>
+                </div>
+                <small class="<%= message.role == 'user' ? 'text-white-50' : 'text-muted' %>">
+                  <%= message.created_at.strftime("%H:%M") %>
+                </small>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="text-center text-muted py-5">
+            <i class="bi bi-chat-dots" style="font-size: 3rem;"></i>
+            <p class="mt-3">开始对话吧！</p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 消息输入区域 -->
+      <div class="border-top p-3 bg-white">
+        <%= form_with model: [@chat, @message], local: true,
+                      class: "d-flex gap-2",
+                      data: { controller: "message-form" } do |form| %>
+          <%= form.text_area :content,
+                            class: "form-control",
+                            placeholder: "输入您的消息...",
+                            rows: 2,
+                            required: true,
+                            data: {
+                              "message-form-target": "textarea",
+                              action: "keydown->message-form#handleKeydown"
+                            } %>
+          <%= form.submit "发送",
+                         class: "btn btn-primary",
+                         data: { "message-form-target": "submit" } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

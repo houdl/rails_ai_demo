@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title mb-0">新建聊天</h3>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @chat, local: true,
+                        class: "needs-validation",
+                        novalidate: true,
+                        data: { controller: "form-validation" } do |form| %>
+            <% if @chat.errors.any? %>
+              <div class="alert alert-danger">
+                <h6>请修正以下错误：</h6>
+                <ul class="mb-0">
+                  <% @chat.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= form.label :title, "聊天标题", class: "form-label" %>
+              <%= form.text_field :title, class: "form-control", placeholder: "请输入聊天标题", required: true %>
+              <div class="invalid-feedback">
+                请输入聊天标题
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <%= link_to "取消", chats_path, class: "btn btn-secondary" %>
+              <%= form.submit "创建聊天", class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
