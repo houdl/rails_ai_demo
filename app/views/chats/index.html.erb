@@ -20,7 +20,7 @@
               <% end %>
               <div class="d-flex flex-column align-items-end">
                 <small class="text-muted mb-1"><%= time_ago_in_words(chat.updated_at) %>前</small>
-                <%= link_to "删除", chat_path(chat), method: :delete,
+                <%= link_to "删除", chat_path(chat), data: {turbo_method: :delete},
                             class: "btn btn-outline-danger btn-sm",
                             confirm: "确定要删除这个聊天吗？" %>
               </div>

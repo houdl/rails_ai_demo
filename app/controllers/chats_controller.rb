@@ -17,16 +17,23 @@ class ChatsController < ApplicationController
   def create
     @chat = Chat.new(chat_params)
 
-    if @chat.save
-      redirect_to @chat, notice: 'Chat was successfully created.'
-    else
-      render :new
+    respond_to do |format|
+      if @chat.save
+        format.turbo_stream { redirect_to @chat }
+        format.html { redirect_to @chat, notice: 'Chat was successfully created.' }
+      else
+        format.turbo_stream { render :new, status: :unprocessable_entity }
+        format.html { render :new }
+      end
     end
   end
 
   def destroy
     @chat.destroy
-    redirect_to chats_url, notice: 'Chat was successfully deleted.'
+    respond_to do |format|
+      format.turbo_stream { redirect_to chats_url }
+      format.html { redirect_to chats_url, notice: 'Chat was successfully deleted.' }
+    end
   end
 
   private

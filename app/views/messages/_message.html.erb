@@ -1,0 +1,10 @@
+<div class="mb-3 <%= 'text-end' if message.role == 'user' %>" id="message_<%= message.id %>">
+  <div class="d-inline-block p-3 rounded message-bubble <%= message.role == 'user' ? 'bg-primary text-white' : 'bg-light' %>">
+    <div class="message-content">
+      <%= simple_format(message.content) %>
+    </div>
+    <small class="<%= message.role == 'user' ? 'text-white-50' : 'text-muted' %>">
+      <%= message.created_at.strftime("%H:%M") %>
+    </small>
+  </div>
+</div>

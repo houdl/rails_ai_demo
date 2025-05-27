@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "chat-sidebar" do %>
+  <div class="list-group list-group-flush">
+    <% Chat.order(updated_at: :desc).limit(10).each do |chat| %>
+      <div class="list-group-item <%= 'active' if defined?(current_chat) && chat == current_chat %>">
+        <%= link_to chat_path(chat), class: "text-decoration-none #{'text-white' if defined?(current_chat) && chat == current_chat}" do %>
+          <div class="fw-bold small"><%= truncate(chat.title, length: 15) %></div>
+          <% if chat.last_message %>
+            <small class="text-muted <%= 'text-white-50' if defined?(current_chat) && chat == current_chat %>">
+              <%= truncate(chat.last_message.content, length: 20) %>
+            </small>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

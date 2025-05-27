@@ -5,13 +5,32 @@ class MessagesController < ApplicationController
     @message = @chat.messages.build(message_params)
     @message.role = 'user'
 
-    if @message.save
-      # Generate AI response using LangChain
-      generate_ai_response
-      redirect_to @chat
-    else
-      @messages = @chat.messages.order(:created_at)
-      render 'chats/show'
+    respond_to do |format|
+      if @message.save
+        # Generate AI response using LangChain
+        generate_ai_response
+
+        format.turbo_stream do
+          # After AI response is generated, show both user message and AI response
+          ai_response = @chat.messages.last
+
+          render turbo_stream: [
+            turbo_stream.append("messages-container", partial: "messages/message", locals: { message: @message }),
+            turbo_stream.append("messages-container", partial: "messages/message", locals: { message: ai_response }),
+            turbo_stream.replace("message-form", partial: "messages/form", locals: { chat: @chat, message: Message.new }),
+            turbo_stream.replace("chat-sidebar", partial: "chats/sidebar", locals: { current_chat: @chat })
+          ]
+        end
+        format.html { redirect_to @chat }
+      else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("message-form", partial: "messages/form", locals: { chat: @chat, message: @message })
+        end
+        format.html do
+          @messages = @chat.messages.order(:created_at)
+          render 'chats/show'
+        end
+      end
     end
   end
 

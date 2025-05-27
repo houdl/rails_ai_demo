@@ -3,16 +3,29 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["textarea", "submit"]
 
+  connect() {
+    this.element.addEventListener("turbo:submit-start", this.handleSubmitStart.bind(this))
+    this.element.addEventListener("turbo:submit-end", this.handleSubmitEnd.bind(this))
+    // 自动聚焦到文本框
+    this.textareaTarget.focus()
+  }
+
   handleKeydown(event) {
-    // 按 Ctrl+Enter 或 Cmd+Enter 发送消息
-    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault()
       this.submitTarget.click()
     }
   }
 
-  connect() {
-    // 自动聚焦到文本框
+  handleSubmitStart() {
+    this.submitTarget.disabled = true
+    this.submitTarget.textContent = "发送中..."
+  }
+
+  handleSubmitEnd() {
+    this.submitTarget.disabled = false
+    this.submitTarget.textContent = "发送"
+    this.textareaTarget.value = ""
     this.textareaTarget.focus()
   }
 }
