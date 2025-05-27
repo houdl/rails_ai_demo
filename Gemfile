@@ -26,6 +26,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'langchainrb', '~> 0.19.5'
 gem 'ruby-openai', '~> 5.0'
 
+gem "eqn", "~> 1.6.5"
+
 # Environment variables
 gem 'dotenv-rails'
 

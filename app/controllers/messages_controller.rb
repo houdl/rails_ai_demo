@@ -27,32 +27,34 @@ class MessagesController < ApplicationController
 
   def generate_ai_response
     begin
-      # Initialize OpenAI client through LangChain
-      llm = Langchain::LLM::OpenAI.new(
-        api_key: ENV['OPENAI_API_KEY']
-      )
-
-      # Prepare messages in the format expected by chat method
-      messages = [
-        { role: "system", content: "You are a helpful assistant." }
-      ]
-
-      # Add conversation history
+      # Ge user messages
+      messages = []
       @chat.messages.order(:created_at).each do |msg|
-        messages << { role: msg.role, content: msg.content }
+        messages << Langchain::Assistant::Messages::OpenAIMessage.new(role: msg.role, content: msg.content )
       end
 
-      # Generate response using chat method
-      response = llm.chat(messages: messages)
-      chat_completion = response.chat_completion
-
-      # Save AI response
-      @chat.messages.create!(
-        content: chat_completion,
-        role: 'assistant'
+      # Initialize LLM and Assistant with Calculator tool
+      llm = Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"])
+      assistant = Langchain::Assistant.new(
+        llm: llm,
+        instructions: "You're a helpful AI assistant",
+        tools: [Langchain::Tool::Calculator.new],
+        messages: messages
       )
+
+      latest_message = @chat.messages.where(role: 'user').last
+      if latest_message
+        # Add user message and run the assistant
+        response = assistant.add_message_and_run!(content: latest_message.content)
+        message = assistant.messages.last
+
+        # Save AI response
+        @chat.messages.create!(
+          content: message.content,
+          role: 'assistant'
+        )
+      end
     rescue => e
-      # binding.pry # 取消注释此行可以在错误时暂停调试
       # Fallback response if AI fails
       @chat.messages.create!(
         content: "I'm sorry, I'm having trouble connecting to the AI service right now. Please try again later. Error: #{e.message}",
