@@ -54,10 +54,11 @@ class MessagesController < ApplicationController
 
       # Initialize LLM and Assistant with Calculator tool
       llm = Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"])
+      tools = [Langchain::Tool::Calculator.new, TestTool.new]
       assistant = Langchain::Assistant.new(
         llm: llm,
         instructions: "You're a helpful AI assistant",
-        tools: [Langchain::Tool::Calculator.new],
+        tools: tools,
         messages: messages
       )
 
