@@ -1,0 +1,121 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">搜索消息</h1>
+    <%= link_to "返回聊天列表", root_path, class: "btn btn-outline-secondary" %>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <%= form_with url: perform_search_path, method: :post, class: "row g-3", data: { turbo: false } do |f| %>
+        <div class="col-md-10">
+          <%= f.text_field :query, value: params[:query], class: "form-control form-control-lg", placeholder: "输入搜索关键词...", autofocus: true %>
+        </div>
+        <div class="col-md-2">
+          <%= f.submit "搜索", class: "btn btn-primary btn-lg w-100" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if params[:query].present? %>
+    <div class="card">
+      <div class="card-header bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">搜索结果: "<%= params[:query] %>"</h5>
+          <span class="badge bg-primary"><%= @total_count %> 条结果</span>
+        </div>
+      </div>
+
+      <% if @results.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">标题</th>
+                <th scope="col">内容</th>
+                <th scope="col">来源</th>
+                <th scope="col">日期</th>
+                <th scope="col">相关度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @results.each do |result| %>
+                <tr>
+                  <td class="fw-bold"><%= result["title"] %></td>
+                  <td><%= truncate(result["content"], length: 150) %></td>
+                  <td>
+                    <% if result["source"] == "user" %>
+                      <span class="badge bg-success">用户</span>
+                    <% else %>
+                      <span class="badge bg-info">AI</span>
+                    <% end %>
+                  </td>
+                  <td><%= result["date"] %></td>
+                  <td>
+                    <div class="progress" style="height: 20px;">
+                      <div class="progress-bar bg-success" role="progressbar"
+                           style="width: <%= (result["relevance_score"] * 100).to_i %>%;"
+                           aria-valuenow="<%= (result["relevance_score"] * 100).to_i %>"
+                           aria-valuemin="0"
+                           aria-valuemax="100">
+                        <%= (result["relevance_score"] * 100).to_i %>%
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="border-0 pt-0">
+                    <div class="accordion" id="resultAccordion<%= result.hash %>">
+                      <div class="accordion-item border-0">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed p-1 bg-light" type="button"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target="#collapse<%= result.hash %>"
+                                  aria-expanded="false"
+                                  aria-controls="collapse<%= result.hash %>">
+                            查看完整内容
+                          </button>
+                        </h2>
+                        <div id="collapse<%= result.hash %>" class="accordion-collapse collapse"
+                             data-bs-parent="#resultAccordion<%= result.hash %>">
+                          <div class="accordion-body">
+                            <p><%= result["content"] %></p>
+                            <% if result["chat_id"].present? %>
+                              <div class="mt-3">
+                                <%= link_to "查看聊天", chat_path(result["chat_id"]), class: "btn btn-sm btn-outline-primary" %>
+                              </div>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="card-body text-center py-5">
+          <div class="mb-3">
+            <i class="bi bi-search" style="font-size: 3rem; color: #6c757d;"></i>
+          </div>
+          <h4 class="text-muted">没有找到匹配的结果</h4>
+          <p class="text-muted">请尝试使用不同的关键词搜索</p>
+        </div>
+      <% end %>
+    </div>
+  <% elsif params[:query] == '' %>
+    <div class="alert alert-warning">
+      请输入搜索关键词
+    </div>
+  <% else %>
+    <div class="text-center py-5">
+      <div class="mb-4">
+        <i class="bi bi-search" style="font-size: 4rem; color: #6c757d;"></i>
+      </div>
+      <h3 class="text-muted">搜索消息内容</h3>
+      <p class="text-muted mb-4">输入关键词来搜索聊天记录</p>
+    </div>
+  <% end %>
+</div>

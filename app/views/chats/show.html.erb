@@ -21,6 +21,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <h4 class="mb-0"><%= @chat.title %></h4>
           <div>
+            <%= link_to "搜索消息", search_path, class: "btn btn-outline-secondary btn-sm me-2" %>
             <%= link_to "返回列表", chats_path, class: "btn btn-outline-secondary btn-sm me-2" %>
             <%= link_to "删除聊天", chat_path(@chat), data: {turbo_method: :delete},
                         class: "btn btn-outline-danger btn-sm",

@@ -1,7 +1,10 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h2">AI 聊天系统</h1>
-    <%= link_to "新建聊天", new_chat_path, class: "btn btn-primary" %>
+    <div>
+      <%= link_to "搜索消息", search_path, class: "btn btn-outline-secondary me-2" %>
+      <%= link_to "新建聊天", new_chat_path, class: "btn btn-primary" %>
+    </div>
   </div>
 
   <div class="row">
