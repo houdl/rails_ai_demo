@@ -1,0 +1,51 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <!-- 侧边栏 -->
+    <div class="col-md-2 col-lg-2 bg-light border-end">
+      <div class="p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">聊天列表</h5>
+          <%= link_to new_chat_path, class: "btn btn-sm btn-primary" do %>
+            <i class="bi bi-plus"></i>
+          <% end %>
+        </div>
+
+        <%= render "chats/sidebar", current_chat: @chat %>
+      </div>
+    </div>
+
+    <!-- 主聊天区域 -->
+    <div class="col-md-10 col-lg-10 d-flex flex-column">
+      <!-- 聊天头部 -->
+      <div class="border-bottom p-3 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><%= @chat.title %></h4>
+          <div>
+            <%= link_to "搜索消息", search_path, class: "btn btn-outline-secondary btn-sm me-2" %>
+            <%= link_to "返回列表", chats_path, class: "btn btn-outline-secondary btn-sm me-2" %>
+            <%= link_to "删除聊天", chat_path(@chat), data: {turbo_method: :delete},
+                        class: "btn btn-outline-danger btn-sm",
+                        confirm: "确定要删除这个聊天吗？" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- 消息区域 -->
+      <div class="flex-grow-1 overflow-auto p-3" id="messages-container" data-controller="chat-scroll turbo" data-action="turbo:frame-load->turbo#messageAdded">
+        <% if @messages.any? %>
+          <%= render partial: "messages/message", collection: @messages, as: :message %>
+        <% else %>
+          <div class="text-center text-muted py-5" id="empty-state">
+            <i class="bi bi-chat-dots" style="font-size: 3rem;"></i>
+            <p class="mt-3">开始对话吧！</p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 消息输入区域 -->
+      <div class="border-top p-3 bg-white">
+        <%= render "messages/form", chat: @chat, message: @message %>
+      </div>
+    </div>
+  </div>
+</div>
