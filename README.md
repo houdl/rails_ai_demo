@@ -51,10 +51,6 @@ rails db:migrate
 # 复制环境变量模板
 cp .env.example .env
 
-# 编辑 .env 文件，添加你的 OpenAI API 密钥
-# OPENAI_API_KEY=your-actual-openai-api-key
-```
-
 ### 5. 启动服务器
 ```bash
 rails server
@@ -63,6 +59,15 @@ rails server
 访问 http://localhost:3000 开始使用聊天系统。
 
 ## 使用说明
+
+### 执行 Roast 工作流
+```bash
+# 设置环境变量
+export OPENROUTER_API_KEY=your-openrouter-api-key
+
+# 执行工作流
+roast execute my_cool_workflow /Users/jason/rails/rails_ai_demo/tmp/test.md
+```
 
 ### 创建新聊天
 1. 点击"新建聊天"按钮
@@ -102,7 +107,16 @@ app/
         ├── form_validation_controller.js
         ├── message_form_controller.js
         └── chat_scroll_controller.js
+
+roast/
+└── my_cool_workflow/
+    ├── workflow.yml
+    ├── analyze_input/
+    │   └── prompt.md
+    └── generate_response/
+        └── prompt.md
 ```
+
 
 ## 自定义配置
 
@@ -128,11 +142,6 @@ app/
 1. `config/importmap.rb` 配置是否正确
 2. Stimulus 控制器文件路径是否正确
 3. 运行 `rails assets:precompile` 重新编译资源
-
-### OpenAI API 问题
-- 确保 API 密钥正确设置
-- 检查 API 配额是否充足
-- 查看 Rails 日志了解具体错误信息
 
 ## 贡献
 

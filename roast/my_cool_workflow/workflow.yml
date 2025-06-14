@@ -1,0 +1,15 @@
+name: OpenRouter Example
+api_provider: openrouter
+api_token: $(echo $OPENROUTER_API_KEY)
+model: anthropic/claude-3.5-sonnet
+
+tools:
+  - Roast::Tools::ReadFile
+  - Roast::Tools::WriteFile
+
+steps:
+  - analyze_input
+  - generate_response
+
+analyze_input:
+  model: anthropic/claude-3.5-sonnet

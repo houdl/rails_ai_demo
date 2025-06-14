@@ -23,9 +23,14 @@ gem 'jbuilder', '~> 2.7'
 
 # LangChain for AI chat functionality
 gem 'langchainrb', '~> 0.19.5'
-gem 'ruby-openai', '~> 5.0'
+gem 'ruby-openai'
 gem 'qdrant-ruby'
 gem 'aws-sdk-bedrockruntime', '~> 1.1'
+
+
+# Structured AI workflows
+# gem 'roast-ai'
+gem "roast-ai", path: "/Users/jason/rails/roast"
 
 gem "eqn", "~> 1.6.5"
 
