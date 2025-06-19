@@ -69,6 +69,11 @@ export OPENROUTER_API_KEY=your-openrouter-api-key
 roast execute my_cool_workflow /Users/jason/rails/rails_ai_demo/tmp/test.md
 ```
 
+![image](https://github.com/user-attachments/assets/42b34917-08b1-44fb-bc40-d731e78952f5)
+![image](https://github.com/user-attachments/assets/216e0422-ab5c-4850-b829-70cb5b3ab6a2)
+![image](https://github.com/user-attachments/assets/fcdded29-5325-47b0-a1a7-bea39c0f095b)
+
+
 ### 创建新聊天
 1. 点击"新建聊天"按钮
 2. 输入聊天标题
