@@ -27,6 +27,9 @@ gem 'ruby-openai'
 gem 'qdrant-ruby'
 gem 'aws-sdk-bedrockruntime', '~> 1.1'
 
+gem 'ruby_llm', '1.4.0'
+gem 'ruby_llm-mcp'
+gem 'ruby_llm-schema'
 
 # Structured AI workflows
 # gem 'roast-ai'

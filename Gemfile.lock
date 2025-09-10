@@ -139,7 +139,7 @@ GEM
       treetop (>= 1.2.0)
     erb (5.0.1)
     erubi (1.13.1)
-    event_stream_parser (0.3.0)
+    event_stream_parser (1.0.0)
     faraday (2.13.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -153,6 +153,9 @@ GEM
     ffi (1.17.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    http-2 (1.1.1)
+    httpx (1.6.0)
+      http-2 (>= 1.0.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -303,6 +306,22 @@ GEM
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
+    ruby_llm (1.4.0)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1.0)
+      zeitwerk (~> 2)
+    ruby_llm-mcp (0.6.1)
+      httpx (~> 1.4)
+      json-schema (~> 5.0)
+      ruby_llm (~> 1.3)
+      thor (~> 1.3)
+      zeitwerk (~> 2)
+    ruby_llm-schema (0.1.0)
     rubyzip (2.4.1)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -384,6 +403,9 @@ DEPENDENCIES
   rails (~> 7.2.0)
   roast-ai!
   ruby-openai
+  ruby_llm (= 1.4.0)
+  ruby_llm-mcp
+  ruby_llm-schema
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
   spring

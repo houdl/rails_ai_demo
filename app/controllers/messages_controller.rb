@@ -55,7 +55,7 @@ class MessagesController < ApplicationController
       # Initialize LLM and Assistant with Calculator tool
       # llm = Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"])
       credentials = Aws::Credentials.new(ENV['AWS_ACCESS_KEY'], ENV['AWS_SECRET_ACCESS_KEY'])
-      llm = Langchain::LLM::AwsBedrock.new(aws_client_options: {region: 'us-east-1', credentials: credentials}, default_options: {chat_completion_model_name: "anthropic.claude-3-5-sonnet-20240620-v1:0"})
+      llm = Langchain::LLM::AwsBedrock.new(aws_client_options: {region: ENV['AWS_REGION'], credentials: credentials}, default_options: {chat_completion_model_name: "anthropic.claude-3-5-sonnet-20240620-v1:0"})
       tools = [Langchain::Tool::Calculator.new, TestTool.new]
 
       assistant = Langchain::Assistant.new(
