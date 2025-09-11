@@ -23,9 +23,11 @@ gem 'jbuilder', '~> 2.7'
 
 # LangChain for AI chat functionality
 gem 'langchainrb', '~> 0.19.5'
-gem 'ruby-openai'
+gem 'ruby-openai', '~> 8.3.0'
 gem 'qdrant-ruby'
 gem 'aws-sdk-bedrockruntime', '~> 1.1'
+
+gem 'playwright-ruby-client'
 
 gem 'ruby_llm', '1.4.0'
 gem 'ruby_llm-mcp'
