@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.2'
+ruby '3.4.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 7.2.0'
@@ -29,7 +29,7 @@ gem 'aws-sdk-bedrockruntime', '~> 1.1'
 
 gem 'playwright-ruby-client'
 
-gem 'ruby_llm', '1.4.0'
+gem 'ruby_llm'
 gem 'ruby_llm-mcp'
 gem 'ruby_llm-schema'
 
